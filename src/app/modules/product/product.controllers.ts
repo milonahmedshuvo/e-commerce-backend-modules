@@ -1,6 +1,7 @@
 import { Request, Response } from "express"
 import { productService } from "./product.service"
 import JoiProductSchema from "./student.joi.validation"
+import { string } from "joi"
 
 
 const createProduct = async (req:Request, res:Response) => {
@@ -43,7 +44,7 @@ const getAllProducts = async (req:Request, res:Response) => {
       
       try{
 
-        const result = await productService.allProducts()
+        const result = await productService.allProductsFromDB()
         res.status(200).json({
         success: "true",
         message: "Products fetched successfully!",
@@ -67,8 +68,7 @@ const singleProduct = async (req:Request, res:Response) => {
       try{
 
       const {productId} = req.params
-      console.log(productId)
-      const result = await productService.singleProduct(productId)
+      const result = await productService.singleProductFromDB(productId)
       res.status(200).json({
         success: "true",
         message: "Product fetched successfully!",
@@ -87,8 +87,81 @@ const singleProduct = async (req:Request, res:Response) => {
 
 
 
+const updateProduct = async (req:Request, res:Response) => {
+     try{
+        const {productId} = req.params
+        const {product} = req.body
+        const result = await productService.updateProductFromDB(productId, product)
+        res.status(200).json({
+          success: "true",
+          message: "Product updated successfully!",
+          data: result
+        })
+     }catch(err:any){
+        res.status(500).json({
+            success: "false",
+            message: "product not update",
+            error: err,
+        })
+     }
+}
+
+
+
+const deleteProduct = async (req:Request, res:Response) => {
+      try{
+       
+      const {productId} = req.params
+      const result = await productService.deleteProductFromDB(productId)
+      res.status(200).json({
+        success: "true",
+        message: "Product deleted successfully!",
+        error: result
+      })
+
+      }catch(err:any){
+          res.status(500).json({
+            success: "false",
+            message: "Product not deleted!",
+            error: err
+          })
+      }
+}
+
+
+
+
+const productSearchQuery = async (req:Request, res:Response) => {
+
+    const searchTerm = req.query.searchTerm
+    console.log("searchTerm:", searchTerm)
+
+    
+    //   try{
+    //     const searchTerm = req.query.searchTerm
+    //   console.log("searchTerm:", searchTerm)
+    //   const result = await productService.productSearchQueryFromDB(searchTerm as string)
+    //   res.status(200).json({
+    //     success: "true",
+    //     message: "Products matching search term 'iphone' fetched successfully!",
+    //     data: result
+    //   })
+
+    //   }catch(err){
+    //     res.status(500).json({
+    //         success: "false",
+    //         message: "not search query product",
+    //         error: err
+    //     })
+    //   }
+}
+
+
 export const productControllers = {
       createProduct,
       getAllProducts,
-      singleProduct
+      singleProduct,
+      updateProduct,
+      deleteProduct,
+      productSearchQuery
 }

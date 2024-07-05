@@ -8,12 +8,12 @@ const createProductFromDB = async (productData: TProduct) => {
 }
 
 
-const allProducts = async () => {
+const allProductsFromDB = async () => {
       const result = await ProductModel.find();
       return result
 }
 
-const singleProduct = async (id:string) => {
+const singleProductFromDB = async (id:string) => {
       const query = {_id: new Object(id)}
       console.log("service id", query)
       const result = await ProductModel.findOne(query)
@@ -21,11 +21,34 @@ const singleProduct = async (id:string) => {
 }
 
 
+const updateProductFromDB = async (id:string, data:TProduct) => {
+    const query = {_id: new Object(id) }
+    const result = await ProductModel.updateOne(query, data )
+    return result
+}
+
+
+
+const deleteProductFromDB = async (id:string) =>{
+    const query = {_id: new Object(id) }
+    const result = await ProductModel.deleteOne(query)
+    return result
+}
+
+
+
+const productSearchQueryFromDB = async (search:string) => {
+      const result = await ProductModel.find()
+      return result
+}
 
 
 
 export const productService = {
     createProductFromDB,
-    allProducts,
-    singleProduct
+     allProductsFromDB,
+     singleProductFromDB,
+    updateProductFromDB,
+    deleteProductFromDB,
+    productSearchQueryFromDB
 }
