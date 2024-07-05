@@ -38,8 +38,18 @@ const deleteProductFromDB = async (id:string) =>{
 
 
 const productSearchQueryFromDB = async (search:string) => {
-      const result = await ProductModel.find()
-      return result
+    
+    const products = await ProductModel.find({
+        $or: [
+            { name: { $regex: search, $options: 'i' } }, 
+            { description: { $regex: search, $options: 'i' } }, 
+            { category: { $regex: search, $options: 'i' } }, 
+            { tags: { $regex: search, $options: 'i' } } 
+        ]
+    });
+    
+
+      return products
 }
 
 

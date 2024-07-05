@@ -10,7 +10,9 @@ router.get("/products",productControllers.getAllProducts)
 router.get("/products/:productId", productControllers.singleProduct)
 router.put("/products/:productId", productControllers.updateProduct)
 router.delete("/products/:productId", productControllers.deleteProduct)
-router.get("/products?searchTerm=iphone", productControllers.productSearchQuery)
+// this is search query api endpoint 
+router.get("/product", productControllers.productSearchQuery)
+
 
 
 
