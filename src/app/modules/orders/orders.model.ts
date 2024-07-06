@@ -1,9 +1,7 @@
 import { Schema, model } from "mongoose";
 import { TOrders } from "./orders.interferce";
 import { ProductModel } from "../product/product.model";
-import ObjectId from 'bson'
-import { number } from "joi";
-import { TProduct } from "../product/product.interferce";
+;
 
 
 const ordersSchema = new Schema <TOrders> ({
@@ -17,11 +15,11 @@ const ordersSchema = new Schema <TOrders> ({
 
 
 ordersSchema.pre("save", async function (next) {
-      const order = this;
+      
     
     
       try {
-        const query = { _id: order.productId };
+        const query = { _id: this.productId };
         const product:any = await ProductModel.findOne(query);
      
     
@@ -31,14 +29,14 @@ ordersSchema.pre("save", async function (next) {
     
         
     
-        if (product.inventory.quantity < order.quantity) {
+        if (product.inventory.quantity < this.quantity) {
           return next(new Error('Insufficient quantity available in inventory'));
         }
 
 
       
     
-        product.inventory.quantity = product.inventory.quantity - order.quantity
+        product.inventory.quantity = product.inventory.quantity - this.quantity
     
 
         if (product.inventory.quantity === 0) {

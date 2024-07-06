@@ -61,7 +61,6 @@ const allProductList = async (req:Request, res:Response) => {
 const ordersByUserEmail = async (req:Request, res:Response) => {
     try{
     const email = req.query.email;
-    console.log("email:", email )
     const result = await OrderService.ordersByUserEmailFromDB(email as string)
     res.status(200).json({
         success: "true",
